@@ -1,5 +1,6 @@
 const route = require('express').Router();
 const { productsController } = require('../controllers');
+const { validateName } = require('../middlewares/validateProducts');
 
 // retorno todos os produtos
 route.get(
@@ -15,6 +16,7 @@ route.get(
 
 route.post(
   '/', 
+  validateName,
   productsController.createdProduct,
 );
 
