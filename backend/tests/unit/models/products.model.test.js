@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
-const { productAllMock, productMock } = require('../mocks/products.mock');
+const { productAllMock, productMock, productNewMock } = require('../mocks/products.mock');
 const { productModel } = require('../../../src/models');
 
 describe('Realizando testes - PRODUCTS MODEL:', function () {
@@ -16,13 +16,26 @@ describe('Realizando testes - PRODUCTS MODEL:', function () {
   });
 
   it('Buscando um produto por id com sucesso', async function () {
-    sinon.stub(connection, 'execute').resolves([productMock]);
+    sinon.stub(connection, 'execute').resolves([[productMock]]);
     const id = 2;
 
     const product = await productModel.findById(id);
 
     expect(product).to.be.an('object');
     expect(product).to.be.deep.equal(productMock);
+  });
+
+  it('Inserindo um novo produto com sucesso', async function () {
+    const id = {
+      insertId: 5,
+    };
+
+    sinon.stub(connection, 'execute').resolves([id]);
+    
+    const product = await productModel.insert(productNewMock);
+
+    expect(product).to.be.an('number');
+    expect(product).to.be.deep.equal(5);
   });
 
   afterEach(function () {

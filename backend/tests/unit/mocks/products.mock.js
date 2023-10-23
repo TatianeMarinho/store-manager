@@ -18,7 +18,21 @@ const productMock = {
   name: 'Traje de encolhimento',
 };
 
+const productNewMock = {
+  name: 'ProdutoQ',
+};
+
+const createdProductMock = {
+  id: 5,
+  name: 'ProdutoQ',
+};
+
+const statusNotFoundMock = { message: 'Product not found' };
+
 module.exports = {
   productAllMock,
   productMock,
+  productNewMock,
+  statusNotFoundMock,
+  createdProductMock,
 };
