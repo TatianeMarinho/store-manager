@@ -1,5 +1,6 @@
 const route = require('express').Router();
 const { salesController } = require('../controllers');
+const { validateSales } = require('../middlewares/validateSales');
 
 // retorna todas as vendas
 route.get(
@@ -16,6 +17,7 @@ route.get(
 // insere uma compra
 route.post(
   '/',
+  validateSales,
   salesController.createSales,
 );
 

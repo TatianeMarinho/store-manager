@@ -1,8 +1,9 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { salesAllMock, saleMock } = require('../mocks/sales.mock');
-const { salesModel } = require('../../../src/models');
+const { salesAllMock, saleMock, newSaleInsertSpMock, saleBodyMock, newSaleResultMock, saleBodyNotProductMock } = require('../mocks/sales.mock');
+const { salesModel, productModel } = require('../../../src/models');
 const { salesService } = require('../../../src/services');
+const { productMock } = require('../mocks/products.mock');
 
 describe('Realizando testes - SALES SERVICE:', function () {
   it('Buscando todas as vendas e retornando o status com sucesso', async function () {
@@ -47,18 +48,25 @@ describe('Realizando testes - SALES SERVICE:', function () {
     expect(sale.data).to.be.deep.equal(dataMock);
   });
 
-  /*   it.only('Inserindo uma nova venda com sucesso e retornando seu status correto', async function () {
-    sinon.stub(salesModel, 'insertSales').resolves(9);
-    sinon.stub(salesModel, 'insertSp').resolves();
+  it('Inserindo uma nova venda com sucesso e retornando seu status correto', async function () {
+    sinon.stub(salesModel, 'insertSales').resolves({ insertId: 9 });
+    sinon.stub(salesModel, 'insertSp').resolves(newSaleInsertSpMock);
+    sinon.stub(productModel, 'findById').resolves(productMock);
 
     const newSale = await salesService.newSale(saleBodyMock);
   
     expect(newSale.status).to.be.equal('CREATED');
-    expect(newSale.data).to.be.deep.equal(saleCreatedResultMock);
-    expect(newSale.data.id).to.be.equal(9);
-    expect(newSale.data.itemsSold).to.be.equal(saleBodyMock);
-    expect(newSale.data).to.be.an('object');
-  }); */
+    expect(newSale.data).to.be.deep.equal(newSaleResultMock);
+  });
+
+  it('Inserindo uma nova venda sem sucesso e retornando seu status correto - "NOT_FOUND"', async function () {
+    sinon.stub(productModel, 'findById').resolves(undefined);
+    
+    const newSale = await salesService.newSale(saleBodyNotProductMock);
+  
+    expect(newSale.status).to.be.equal('NOT_FOUND');
+    expect(newSale.data).to.be.deep.equal({ message: 'Product not found' });
+  });
 
   afterEach(function () {
     sinon.restore();

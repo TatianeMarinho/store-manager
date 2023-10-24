@@ -1,4 +1,4 @@
-const { salesModel } = require('../models');
+const { salesModel, productModel } = require('../models');
 
 const findAllSales = async () => {
   const sales = await salesModel.findAll();
@@ -21,7 +21,23 @@ const findSaleId = async (saleId) => {
   return { status: 'SUCCESSFUL', data: sale };
 };
 
+const productExist = async (sale) => {
+  const { productId } = sale;
+
+  const exist = await productModel.findById(productId);
+
+  if (!exist) {
+    return { status: 'NOT_FOUND' };
+  }
+  return { status: 'OK' };
+};
+
 const newSale = async (sales) => {
+  const isValid = await Promise.all(sales.map((sale) => productExist(sale)));
+  if (isValid.some((result) => result.status === 'NOT_FOUND')) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+  }
+
   const { insertId } = await salesModel.insertSales();
 
   if (Array.isArray(sales)) {
@@ -29,6 +45,7 @@ const newSale = async (sales) => {
       const { productId, quantity } = object;
       await salesModel.insertSp(insertId, productId, quantity);
     });
+
     const result = {
       id: insertId,
       itemsSold: sales,

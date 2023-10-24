@@ -21,6 +21,10 @@ const salesAllMock = [
   },
 ];
 
+const saleIdMock = {
+  sale: 9,
+};
+
 const saleMock = [
   {
     date: DATE,
@@ -34,11 +38,8 @@ const saleMock = [
   },
 ];
 
-const saleIdMock = { sale: 9 };
-
-const saleBodyMock = [
+const salesProductIdNotMock = [
   {
-    productId: 1,
     quantity: 1,
   },
   {
@@ -47,7 +48,47 @@ const saleBodyMock = [
   },
 ];
 
-const saleCreatedResultMock = {
+const salesQuantityNotMock = [
+  {
+    productId: 1 },
+  {
+    productId: 2,
+    quantity: 5,
+  },
+];
+
+const salesQuantityMenorMock = [
+  {
+    productId: 1,
+    quantity: 1,
+  },
+  {
+    productId: 2,
+    quantity: 0,
+  },
+];
+
+const saleBodyMock = [
+  {
+    productId: 1,
+    quantity: 19,
+  },
+];
+
+const saleBodyNotProductMock = [
+  {
+    productId: 99,
+    quantity: 19,
+  },
+];
+
+const newSaleInsertSpMock = {
+  date: '2023-10-24T13:56:29.000Z',
+  productId: 1,
+  quantity: 19,
+};
+
+const newSaleResultMock = {
   id: 9,
   itemsSold: saleBodyMock,
 };
@@ -55,7 +96,12 @@ const saleCreatedResultMock = {
 module.exports = {
   salesAllMock,
   saleMock,
-  saleIdMock,
   saleBodyMock,
-  saleCreatedResultMock,
+  saleIdMock,
+  salesProductIdNotMock,
+  salesQuantityNotMock,
+  salesQuantityMenorMock,
+  newSaleInsertSpMock,
+  newSaleResultMock,
+  saleBodyNotProductMock,
 };
