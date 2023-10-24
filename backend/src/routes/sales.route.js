@@ -13,4 +13,10 @@ route.get(
   salesController.saleId,
 );
 
+// insere uma compra
+route.post(
+  '/',
+  salesController.createSales,
+);
+
 module.exports = route;

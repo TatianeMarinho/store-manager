@@ -21,7 +21,25 @@ const findSaleId = async (saleId) => {
   return { status: 'SUCCESSFUL', data: sale };
 };
 
+const newSale = async (sales) => {
+  const { insertId } = await salesModel.insertSales();
+
+  if (Array.isArray(sales)) {
+    sales.forEach(async (object) => {
+      const { productId, quantity } = object;
+      await salesModel.insertSp(insertId, productId, quantity);
+    });
+    const result = {
+      id: insertId,
+      itemsSold: sales,
+    };
+  
+    return { status: 'CREATED', data: result };
+  }
+};
+
 module.exports = {
   findAllSales,
   findSaleId,
+  newSale,
 };

@@ -27,8 +27,27 @@ const findById = async (saleId) => {
   );
   return sale;
 };
-  
+
+// crio a nova compra na tabela sales que recebi um id automatico e uma data com hora da compra.
+const insertSales = async () => {
+  const query = 'INSERT INTO sales (date) VALUES (NOW());';
+
+  const [sale] = await connection.execute(query);
+
+  return sale;
+};
+
+// insiro a nova compra na tabela sales_products que recebe o id da sales e a quantidade de cada produto comprado e id do produto
+const insertSp = async (saleId, producId, quantity) => {
+  const querySp = `INSERT INTO sales_products (sale_id, product_id, quantity)
+  VALUES (?, ?, ?);`;
+
+  await connection.execute(querySp, [saleId, producId, quantity]);
+};
+
 module.exports = {
   findAll,
   findById,
+  insertSales,
+  insertSp,
 };

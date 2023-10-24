@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
-const { salesAllMock, saleMock } = require('../mocks/sales.mock');
+const { salesAllMock, saleMock, saleIdMock } = require('../mocks/sales.mock');
 const { salesModel } = require('../../../src/models');
 
 describe('Realizando testes - SALES MODEL:', function () {
@@ -25,7 +25,24 @@ describe('Realizando testes - SALES MODEL:', function () {
     expect(sale).to.be.deep.equal(saleMock);
   });
 
+  it('Inserindo uma venda com sucesso - insertSales', async function () {
+    sinon.stub(connection, 'execute').resolves([saleIdMock]);
+
+    const sale = await salesModel.insertSales();
+
+    expect(sale).to.be.an('object');
+    expect(sale).to.be.deep.equal(saleIdMock);
+  });
+
+  it('Inserindo uma lista de vendas com sucesso - insertSp', async function () {
+    const result = sinon.stub(connection, 'execute').resolves([]);
+
+    await salesModel.insertSp([]);
+
+    expect(result.called);
+  });
+
   afterEach(function () {
     sinon.restore();
-  });
+  }); 
 });

@@ -47,6 +47,19 @@ describe('Realizando testes - SALES SERVICE:', function () {
     expect(sale.data).to.be.deep.equal(dataMock);
   });
 
+  /*   it.only('Inserindo uma nova venda com sucesso e retornando seu status correto', async function () {
+    sinon.stub(salesModel, 'insertSales').resolves(9);
+    sinon.stub(salesModel, 'insertSp').resolves();
+
+    const newSale = await salesService.newSale(saleBodyMock);
+  
+    expect(newSale.status).to.be.equal('CREATED');
+    expect(newSale.data).to.be.deep.equal(saleCreatedResultMock);
+    expect(newSale.data.id).to.be.equal(9);
+    expect(newSale.data.itemsSold).to.be.equal(saleBodyMock);
+    expect(newSale.data).to.be.an('object');
+  }); */
+
   afterEach(function () {
     sinon.restore();
   });
