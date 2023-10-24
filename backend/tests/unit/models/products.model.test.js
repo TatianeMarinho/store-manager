@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
 const connection = require('../../../src/models/connection');
-const { productAllMock, productMock, productNewMock } = require('../mocks/products.mock');
+const { productAllMock, productMock, productNewMock, updateMock } = require('../mocks/products.mock');
 const { productModel } = require('../../../src/models');
 
 describe('Realizando testes - PRODUCTS MODEL:', function () {
@@ -36,6 +36,15 @@ describe('Realizando testes - PRODUCTS MODEL:', function () {
 
     expect(product).to.be.an('number');
     expect(product).to.be.deep.equal(5);
+  });
+
+  it('Atualizando um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves(1);
+    
+    const product = await productModel.update(updateMock, 1);
+
+    expect(product).to.be.an('number');
+    expect(product).to.be.deep.equal(1);
   });
 
   afterEach(function () {

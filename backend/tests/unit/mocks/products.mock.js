@@ -29,10 +29,21 @@ const createdProductMock = {
 
 const statusNotFoundMock = { message: 'Product not found' };
 
+const updateMock = {
+  name: 'Martelo do Batman',
+};
+
+const updateResultMock = {
+  id: 1,
+  name: 'Martelo do Batman',
+};
+
 module.exports = {
   productAllMock,
   productMock,
   productNewMock,
   statusNotFoundMock,
   createdProductMock,
+  updateMock,
+  updateResultMock,
 };

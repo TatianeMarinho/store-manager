@@ -27,9 +27,23 @@ const newProducts = async (productObject) => {
 
   return { status: 'CREATED', data: newObject };
 };
+
+const updateProduct = async (upProduct, idProduct) => {
+  const existProduct = await productModel.findById(idProduct);
+
+  if (existProduct === undefined) {
+    return { status: 'NOT_FOUND', data: { message: 'Product not found' } };
+  }
+  await productModel.update(upProduct, idProduct);
+
+  const product = await productModel.findById(idProduct);
+
+  return { status: 'SUCCESSFUL', data: product };
+};
   
 module.exports = {
   findAllProducts,
   findProductId,
   newProducts,
+  updateProduct,
 };

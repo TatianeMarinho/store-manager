@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
-const { productAllMock, productMock, statusNotFoundMock, createdProductMock, productNewMock } = require('../mocks/products.mock');
+const { productAllMock, productMock, statusNotFoundMock, createdProductMock, productNewMock, updateMock, updateResultMock } = require('../mocks/products.mock');
 const { productModel } = require('../../../src/models');
 const { productsService } = require('../../../src/services');
 
@@ -56,6 +56,28 @@ describe('Realizando testes - PRODUCTS SERVICE:', function () {
     expect(newProduct.data.id).to.be.equal(5);
     expect(newProduct.data.name).to.be.equal('ProdutoQ');
     expect(newProduct.data).to.be.an('object');
+  });
+
+  it('Atualizando um produto com sucesso e retornando o status correto', async function () {
+    sinon.stub(productModel, 'update').resolves(1);
+    sinon.stub(productModel, 'findById').resolves(updateResultMock);
+
+    const product = await productsService.updateProduct(updateMock);
+  
+    expect(product.status).to.be.equal('SUCCESSFUL');
+    expect(product.data).to.be.deep.equal(updateResultMock);
+    expect(product.data.id).to.be.equal(1);
+    expect(product.data.name).to.be.equal('Martelo do Batman');
+    expect(product.data).to.be.an('object');
+  });
+
+  it('Atualizando um produto que não existe e retornando o status correto', async function () {
+    sinon.stub(productModel, 'findById').resolves(undefined);
+
+    const product = await productsService.updateProduct(updateMock);
+    
+    expect(product.status).to.be.equal('NOT_FOUND');
+    expect(product.data).to.be.deep.equal(statusNotFoundMock);
   });
 
   afterEach(function () {
