@@ -47,6 +47,15 @@ describe('Realizando testes - PRODUCTS MODEL:', function () {
     expect(product).to.be.deep.equal(1);
   });
 
+  it('Deletando um produto com sucesso', async function () {
+    sinon.stub(connection, 'execute').resolves(1);
+    
+    const product = await productModel.deleteP(1);
+
+    expect(product).to.be.an('number');
+    expect(product).to.be.deep.equal(1);
+  });
+
   afterEach(function () {
     sinon.restore();
   });

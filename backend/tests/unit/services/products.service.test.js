@@ -80,6 +80,26 @@ describe('Realizando testes - PRODUCTS SERVICE:', function () {
     expect(product.data).to.be.deep.equal(statusNotFoundMock);
   });
 
+  it('Deletando um producto que existe e retornando o status correto', async function () {
+    sinon.stub(productModel, 'deleteP').resolves(1);
+    sinon.stub(productModel, 'findById').resolves(updateResultMock);
+
+    const product = await productsService.delProduct(1);
+    
+    expect(product.status).to.be.equal('DELETED');
+    expect(product.data).to.be.deep.equal({ message: 'Deleted successful' });
+  });
+
+  it('Deletando um producto que não existe e retornando o status correto', async function () {
+    sinon.stub(productModel, 'deleteP').resolves(999);
+    sinon.stub(productModel, 'findById').resolves(undefined);
+
+    const product = await productsService.delProduct(999);
+    
+    expect(product.status).to.be.equal('NOT_FOUND');
+    expect(product.data).to.be.deep.equal(statusNotFoundMock);
+  });
+
   afterEach(function () {
     sinon.restore();
   });
